@@ -8,7 +8,7 @@ import os
 from time import time
 from torch.optim import lr_scheduler
 
-Class lpnet():
+class lpnet():
     def __init__(self, numPoints, numClasses, model_name= None, net_file= None, base_file = None, use_gpu= true):
         self.numPoints = numPoints
         self.numClasses = numClasses

@@ -3,6 +3,7 @@ from load_data import *
 
 from torch.utils.data import *
 from imutils import paths
+from os.path import isfile, join
 import cv2
 import os
 import numpy as np
@@ -18,7 +19,7 @@ def load_path(img_dir):
     img_paths = []
     labels = []
     for f in files:
-        fp= open(join(path, f), "r")
+        fp= open(join(img_dir, f), "r")
         text = fp.read()
         content = text.strip().split('\t')
         img_paths.append(content[0])
@@ -37,13 +38,14 @@ class LpLocDataLoader(Dataset):
 
     def __getitem__(self, index):
         img_name = self.img_paths[index]
-        img = cv2.imread(img_name)
+        img = cv2.imread(join(self.img_dir, img_name))
         resizedImage = cv2.resize(img, self.img_size)
         resizedImage = np.reshape(resizedImage, (resizedImage.shape[2], resizedImage.shape[0], resizedImage.shape[1]))
 
         ori_w, ori_h = float(img.shape[1]), float(img.shape[0])
-        assert img.shape[0] == 1160
-        new_labels = [(self.labels[0] + self.labels[2])/(2*ori_w), (self.labels[1] + self.labels[3])/(2*ori_h), (self.labels[2]-self.labels[0])/ori_w, (self.labels[3]-self.labels[1])/ori_h]
+        #assert img.shape[0] == 1160
+        label = self.labels[index]
+        new_labels = [(int(label[0]) + int(label[2]))/(2*ori_w), (int(label[1]) + int(label[3]))/(2*ori_h), (int(label[2])-int(label[0]))/ori_w, (int(label[3])-int(label[1]))/ori_h]
 
         resizedImage = resizedImage.astype('float32')
         # Y = Y.astype('int8')
@@ -57,6 +59,6 @@ class LpLocDataLoader(Dataset):
         return resizedImage, new_labels
 
 lpnet = lpnet(numPoints, numClasses, model_name= 'base', net_file= None, base_file = None)
-dst = ChaLocDataLoader('img', imgSize)
+dst = LpLocDataLoader('img', imgSize)
 trainloader = DataLoader(dst, batch_size=batchSize, shuffle=True, num_workers=4)
 lpnet.train(trainloader, batchSize, epoch_start= 0, epochs= 25)

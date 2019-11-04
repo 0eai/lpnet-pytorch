@@ -25,20 +25,23 @@ class lpnet():
     def train(self, dataloader, batchSize, epoch_start= 0, epochs= 25):
         self.dataloader = dataloader
         self.batchSize = batchSize
+        self.epoch_start = epoch_start
         self.epochs = epochs
         if self.model_name == 'lpnet':
             self.criterion = nn.CrossEntropyLoss()
-            # self.optimizer = optim.RMSprop(model_conv.parameters(), lr=0.01, momentum=0.9)
+            # self.optimizer = optim.RMSprop(self.model.parameters(), lr=0.01, momentum=0.9)
             self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9)
             self.lrScheduler = lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.1)
+            self.train_net()
         else:
             self.criterion = nn.MSELoss()
             self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9)
             self.lrScheduler = lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.1)
+            self.train_base()
 
     def train_base(self):
         # since = time.time()
-        for epoch in range(epoch_start, self.epochs):
+        for epoch in range(self.epoch_start, self.epochs):
             lossAver = []
             self.model.train(True)
             self.lrScheduler.step()
@@ -78,7 +81,7 @@ class lpnet():
 
     def train_net(self, model, criterion, optimizer, num_epochs=25):
         # since = time.time()
-        for epoch in range(epoch_start, self.epochs):
+        for epoch in range(self.epoch_start, self.epochs):
             lossAver = []
             self.model.train(True)
             self.lrScheduler.step()

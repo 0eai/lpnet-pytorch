@@ -9,7 +9,7 @@ from time import time
 from torch.optim import lr_scheduler
 
 class lpnet():
-    def __init__(self, numPoints, numClasses, model_name= None, net_file= None, base_file = None, use_gpu= true):
+    def __init__(self, numPoints, numClasses, model_name= None, net_file= None, base_file = None):
         self.numPoints = numPoints
         self.numClasses = numClasses
         self.model_name = model_name
@@ -140,11 +140,11 @@ class lpnet():
                     print ("fail to load existed model! Existing ...")
                     exit(0)
                 print ("Load existed model! %s" % self.net_file)
-                self.model = net(self.numPoints, self.numClasses)
+                self.model = net.net(self.numPoints, self.numClasses)
                 self.model = torch.nn.DataParallel(self.model, device_ids=range(torch.cuda.device_count()))
                 self.model.load_state_dict(torch.load(self.net_file))
             else:
-                self.model = net(self.numPoints, self.numClasses, self.base_file)
+                self.model = net.net(self.numPoints, self.numClasses, self.base_file)
                 if self.use_gpu:
                     self.model = torch.nn.DataParallel(self.model, device_ids=range(torch.cuda.device_count()))
         elif self.model_name == 'base':
@@ -153,11 +153,11 @@ class lpnet():
                     print ("fail to load existed model! Existing ...")
                     exit(0)
                 print ("Load existed model! %s" % self.base_file)
-                self.model = base(self.numPoints)
+                self.model = base.base(self.numPoints)
                 self.model = torch.nn.DataParallel(self.model, device_ids=range(torch.cuda.device_count()))
                 self.model.load_state_dict(torch.load(self.base_file))
             else:
-                self.model = base(self.numPoints)
+                self.model = base.base(self.numPoints)
                 if use_gpu:
                     self.model = torch.nn.DataParallel(self.model, device_ids=range(torch.cuda.device_count()))
         else:

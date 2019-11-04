@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from roi_pooling import roi_pooling_ims
-#from base import base
+from model.roi_pooling import roi_pooling_ims
+#import base
 
 class net(nn.Module):
     def __init__(self, num_points, num_classes, basePath=None):

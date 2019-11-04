@@ -3,16 +3,16 @@ import torch.nn as nn
 class base(nn.Module):
     def __init__(self, num_points=4):
         super(base, self).__init__()
-        hidden1 = block(in_chs= 3, out_chs= 48, k_size=5, pad=2, c_stride= 2, mp_stride= 2)
-        hidden2 = block(in_chs= 48, out_chs= 64, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
-        hidden3 = block(in_chs= 64, out_chs= 128, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
-        hidden4 = block(in_chs= 128, out_chs= 160, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
-        hidden5 = block(in_chs= 160, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
-        hidden6 = block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
-        hidden7 = block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
-        hidden8 = block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
-        hidden9 = block(in_chs= 192, out_chs= 192, k_size=3, pad=1, c_stride= 1, mp_stride= 2)
-        hidden10 = block(in_chs= 192, out_chs= 192, k_size=3, pad=1, c_stride= 1, mp_stride= 1)
+        hidden1 = self.block(in_chs= 3, out_chs= 48, k_size=5, pad=2, c_stride= 2, mp_stride= 2)
+        hidden2 = self.block(in_chs= 48, out_chs= 64, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
+        hidden3 = self.block(in_chs= 64, out_chs= 128, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
+        hidden4 = self.block(in_chs= 128, out_chs= 160, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
+        hidden5 = self.block(in_chs= 160, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
+        hidden6 = self.block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
+        hidden7 = self.block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 2)
+        hidden8 = self.block(in_chs= 192, out_chs= 192, k_size=5, pad=2, c_stride= 1, mp_stride= 1)
+        hidden9 = self.block(in_chs= 192, out_chs= 192, k_size=3, pad=1, c_stride= 1, mp_stride= 2)
+        hidden10 = self.block(in_chs= 192, out_chs= 192, k_size=3, pad=1, c_stride= 1, mp_stride= 1)
 
         self.features = nn.Sequential(
             hidden1,
@@ -26,7 +26,7 @@ class base(nn.Module):
             hidden9,
             hidden10
         )
-        
+
         self.classifier = nn.Sequential(
             nn.Linear(23232, 100),
             # nn.ReLU(inplace=True),

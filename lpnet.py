@@ -158,7 +158,7 @@ class lpnet():
                 self.model.load_state_dict(torch.load(self.base_file))
             else:
                 self.model = base.base(self.numPoints)
-                if use_gpu:
+                if self.use_gpu:
                     self.model = torch.nn.DataParallel(self.model, device_ids=range(torch.cuda.device_count()))
         else:
             print ("wrong model name! Existing ...")

@@ -57,6 +57,6 @@ class LpLocDataLoader(Dataset):
         return resizedImage, new_labels
 
 lpnet = lpnet(numPoints, numClasses, model_name= 'base', net_file= None, base_file = None)
-dst = ChaLocDataLoader(args["images"].split(','), imgSize)
+dst = ChaLocDataLoader('img', imgSize)
 trainloader = DataLoader(dst, batch_size=batchSize, shuffle=True, num_workers=4)
 lpnet.train(trainloader, batchSize, epoch_start= 0, epochs= 25)

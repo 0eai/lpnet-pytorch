@@ -29,12 +29,12 @@ class lpnet():
         if self.model_name == 'lpnet':
             self.criterion = nn.CrossEntropyLoss()
             # self.optimizer = optim.RMSprop(model_conv.parameters(), lr=0.01, momentum=0.9)
-            self.optimizer = optim.SGD(model_conv.parameters(), lr=0.001, momentum=0.9)
-            self.lrScheduler = lr_scheduler.StepLR(optimizer_conv, step_size=5, gamma=0.1)
+            self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9)
+            self.lrScheduler = lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.1)
         else:
             self.criterion = nn.MSELoss()
-            self.optimizer = optim.SGD(model_conv.parameters(), lr=0.001, momentum=0.9)
-            self.lrScheduler = lr_scheduler.StepLR(optimizer_conv, step_size=5, gamma=0.1)
+            self.optimizer = optim.SGD(self.model.parameters(), lr=0.001, momentum=0.9)
+            self.lrScheduler = lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=0.1)
 
     def train_base(self):
         # since = time.time()

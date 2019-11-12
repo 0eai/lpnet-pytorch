@@ -79,7 +79,7 @@ class lpnet():
                 outF.write('Epoch: %s %s %s\n' % (epoch, sum(lossAver) / len(lossAver), time()-start))
             torch.save(self.model.state_dict(), self.model_name + '.pth' + str(epoch))
 
-    def train_net(self, model, criterion, optimizer, num_epochs=25):
+    def train_net(self):
         # since = time.time()
         for epoch in range(self.epoch_start, self.epochs):
             lossAver = []
@@ -91,7 +91,7 @@ class lpnet():
                 if not len(XI) == self.batchSize:
                     continue
 
-                YI = [[int(ee) for ee in el.split('_')[:7]] for el in labels]
+                YI = np.array([[int(ee) for ee in el] for el in labels]).T
                 Y = np.array([el.numpy() for el in Y]).T
                 if self.use_gpu:
                     x = Variable(XI.cuda(0))

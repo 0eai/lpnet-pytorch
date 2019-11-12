@@ -1,22 +1,22 @@
 import torch
 import torch.nn as nn
 from model.roi_pooling import roi_pooling_ims
-#import base
+import base
 
 class net(nn.Module):
     def __init__(self, num_points, num_classes, basePath=None):
         super(net, self).__init__()
-        self.load_base(basePath)
-        self.classifier1 = classifier(numClasses)
-        self.classifier2 = classifier(numClasses)
-        self.classifier3 = classifier(numClasses)
-        self.classifier4 = classifier(numClasses)
-        self.classifier5 = classifier(numClasses)
-        self.classifier6 = classifier(numClasses)
-        self.classifier7 = classifier(numClasses)
+        self.load_base(basePath, num_points)
+        self.classifier1 = self.classifier(num_classes)
+        self.classifier2 = self.classifier(num_classes)
+        self.classifier3 = self.classifier(num_classes)
+        self.classifier4 = self.classifier(num_classes)
+        self.classifier5 = self.classifier(num_classes)
+        self.classifier6 = self.classifier(num_classes)
+        self.classifier7 = self.classifier(num_classes)
 
-    def load_base(self, path):
-        self.base = base(numPoints)
+    def load_base(self, path, num_points):
+        self.base = base(num_points)
         self.base = torch.nn.DataParallel(self.base, device_ids=range(torch.cuda.device_count()))
         if not path is None:
             self.base.load_state_dict(torch.load(path))
@@ -24,13 +24,13 @@ class net(nn.Module):
         # for param in self.base.parameters():
         #     param.requires_grad = False
 
-    def classifier(self, numClasses):
+    def classifier(self, num_classes):
         return nn.Sequential(
             # nn.Dropout(),
             nn.Linear(53248, 128),
             # nn.ReLU(inplace=True),
             # nn.Dropout(),
-            nn.Linear(128, provNum),
+            nn.Linear(128, num_classes),
         )
 
     def forward(self, x):

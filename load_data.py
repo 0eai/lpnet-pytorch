@@ -23,7 +23,7 @@ def load_path(img_dir):
   return img_paths[:20], boxes[:20], lp_nums[:20]
 
 class lpDataLoader(Dataset):
-  def __init__(self, img_dir, input_shape, ads, model_name = model_name, is_transform=None):
+  def __init__(self, img_dir, input_shape, ads, model_name, is_transform=None):
     self.img_dir = img_dir
     self.ads = ads
     self.img_paths, self.boxes, self.lp_nums = load_path(self.img_dir)
@@ -43,7 +43,7 @@ class lpDataLoader(Dataset):
     lp_num = [int(self.ads[lp_num[i]]) for i in range(len(lp_num))]
     for i in range(10 - len(lp_num)):
       lp_num.append(0)
-    h, w = input_shape
+    h, w = self.input_shape
 
     box[0] = box[0] - (box[2] / 2)
     box[1] = box[1] - (box[3] / 2)
@@ -61,6 +61,8 @@ class lpDataLoader(Dataset):
     new_image = Image.new('RGB', (w,h), (128,128,128))
     new_image.paste(image, (dx, dy))
     image_data = np.array(new_image)/255.
+    image_data = image_data.astype('float32')
+    image_data = np.transpose(image_data, (2,0,1))
 
     box[[0,2]] = box[[0,2]] * scale + dx
     box[[1,3]] = box[[1,3]] * scale + dy

@@ -1,4 +1,5 @@
-from model import net, base
+from model.net import net
+from model.base import base
 import torch
 import torch.nn as nn
 import torch.optim as optim
